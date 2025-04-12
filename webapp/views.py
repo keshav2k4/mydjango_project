@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import StudentForm, TeacherForm
 from .models import Student, Teacher
+from rest_framework import viewsets
+from .models import Student, Teacher
+from .serializers import StudentSerializer, TeacherSerializer
 def add_student(request):
+    
     if request.method == 'POST':
         form = StudentForm(request.POST)
         if form.is_valid():
@@ -31,3 +35,12 @@ def register_teacher(request):
 def teacher_list(request):
     teachers = Teacher.objects.all()
     return render(request, 'student_app/teacher_list.html', {'teachers': teachers})
+
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class TeacherViewSet(viewsets.ModelViewSet):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+    
